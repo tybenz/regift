@@ -1,4 +1,4 @@
-should = require 'should'
+should = require('chai').should()
 Actor  = require '../src/actor'
 
 describe "Actor", ->

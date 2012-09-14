@@ -1,4 +1,4 @@
-should = require 'should'
+should = require('chai').should()
 git    = require '../src'
 Repo   = require '../src/repo'
 

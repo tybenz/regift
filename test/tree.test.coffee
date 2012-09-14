@@ -1,4 +1,4 @@
-should    = require 'should'
+should    = require('chai').should()
 fixtures  = require './fixtures'
 git       = require '../src'
 Tree      = require '../src/tree'

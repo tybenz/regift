@@ -216,9 +216,8 @@ module.exports = class Repo
   commit: (message, options, callback) ->
     [options, callback] = [callback, options] if !callback
     options ?= {}
-    options = _.extend options, {m: "'#{message}'"}
-    @git "commit", options, (err, stdout, stderr) ->
-      callback err
+    options = _.extend options, {m: "\"#{message}\""}
+    @git "commit", options, callback
   
   # Public: Add files to the index.
   # 

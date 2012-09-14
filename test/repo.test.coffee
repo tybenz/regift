@@ -1,5 +1,6 @@
-should   = require 'should'
+should   = require('chai').should()
 fs       = require 'fs'
+rimraf   = require 'rimraf'
 fixtures = require './fixtures'
 git      = require '../src'
 Commit   = require '../src/commit'
@@ -146,9 +147,9 @@ describe "Repo", ->
         remotes[0].should.be.an.instanceof Ref
       
       it "contains the correct Refs", ->
-        remotes[0].commit.id.should.eql "bdd3996d38d885e18e5c5960df1c2c06e34d673f"
+        remotes[0].commit.id.should.eql "80b4f47883767e410b1e533020db7bcdfacb760f"
         remotes[0].name.should.eql "origin/HEAD"
-        remotes[1].commit.id.should.eql "bdd3996d38d885e18e5c5960df1c2c06e34d673f"
+        remotes[1].commit.id.should.eql "80b4f47883767e410b1e533020db7bcdfacb760f"
         remotes[1].name.should.eql "origin/master"
     
     describe "when there are no remotes", ->
@@ -205,18 +206,20 @@ describe "Repo", ->
     repo    = null
     git_dir = __dirname + "/fixtures/junk_create_tag"
     before (done) ->
-      fs.mkdir git_dir, 0755, (err) ->
+      rimraf git_dir, (err) ->
         return done err if err
-        git.init git_dir, (err) ->
+        fs.mkdir git_dir, '0755', (err) ->
           return done err if err
-          repo = git(git_dir)
-          fs.writeFileSync "#{git_dir}/foo.txt", "cheese"
-          repo.add "#{git_dir}/foo.txt", (err) ->
+          git.init git_dir, (err) ->
             return done err if err
-            repo.commit "initial commit", {all: true}, done
+            repo = git(git_dir)
+            fs.writeFileSync "#{git_dir}/foo.txt", "cheese"
+            repo.add "#{git_dir}/foo.txt", (err) ->
+              return done err if err
+              repo.commit "initial commit", {all: true}, done
 
     after (done) ->
-      exec "rm -rf #{ git_dir }", done
+      rimraf git_dir, done
 
     it "creates a tag", (done) ->
       repo.create_tag "foo", done

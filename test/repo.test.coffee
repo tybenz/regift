@@ -85,6 +85,41 @@ describe "Repo", ->
         commits[0].message.should.include "commit 4"
   
   
+  describe "#commit", ->
+    repo    = null
+    commit  = null
+    git_dir = __dirname + "/fixtures/junk_commit"
+    # given a fresh new repo
+    before (done) ->
+      rimraf git_dir, (err) ->
+        return done err if err
+        fs.mkdir git_dir, '0755', (err) ->
+          return done err if err
+          git.init git_dir, (err) ->
+            return done err if err
+            repo = git(git_dir)
+            fs.writeFileSync "#{git_dir}/foo.txt", "cheese"
+            repo.add "#{git_dir}/foo.txt", (err) ->
+              return done err if err
+              repo.commit 'message with spaces', 
+                all:true
+                author: 'Someone <someone@somewhere.com>'
+              , (err) ->
+                return done err if err
+                repo.commits (err, _commits) ->
+                  commit = _commits[0]
+                  done err
+
+    after (done) ->
+      rimraf git_dir, done
+
+    it "has right message", (done) ->
+      commit.message.should.eql 'message with spaces'
+      commit.author.name.should.eql 'Someone'
+      commit.author.email.should.eql 'someone@somewhere.com'
+      done()
+
+
   describe "#tree", ->
     repo = fixtures.branched
     describe "master", ->

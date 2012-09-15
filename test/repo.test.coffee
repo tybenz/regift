@@ -119,6 +119,13 @@ describe "Repo", ->
       commit.author.email.should.eql 'someone@somewhere.com'
       done()
 
+    it "has a tree", (done) ->
+      commit.tree().should.be.an.instanceof Tree
+      commit.tree().contents (err, child) ->
+        return done err if err
+        child.length.should.eql 1
+        child[0].name.should.eql 'foo.txt'
+        done()
 
   describe "#tree", ->
     repo = fixtures.branched

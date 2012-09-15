@@ -117,6 +117,7 @@ Commit some changes.
   * `options`  -
     - `all`    - `Boolean`
     - `amend`  - `Boolean`
+    - `author` - `String` that must match "Au thor Author <author@nowhere.org>"
   * `callback` - Receives `(err)`.
 
 ### `Repo#add(files, callback)`
@@ -135,9 +136,8 @@ Commit some changes.
 ### `Commit#parents`
 `Commit[]`
 
-### `Commit#tree(callback)`
-
-  * `callback` - Receives `(err, tree)`.
+### `Commit#tree()`
+`Tree` - The commit's content tree.
 
 ### `Commit#author`
 `Actor`

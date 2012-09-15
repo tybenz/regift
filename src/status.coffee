@@ -20,11 +20,12 @@ BEGIN_UNSTAGED  = [
 BEGIN_UNTRACKED = [
   "# Untracked files:"
 ]
-FILE            = /^#\s+([^\s]+)[:]\s+(.+)$/
+FILE            = /^#\s+([^:]+)[:]\s+(.+)$/
 TYPES =
-  added:    "A"
-  modified: "M"
-  deleted:  "D"
+  'new file': "N"
+  added:      "A"
+  modified:   "M"
+  deleted:    "D"
 
 S.Status = class Status
   constructor: (@repo) ->

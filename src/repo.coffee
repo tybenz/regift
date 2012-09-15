@@ -225,11 +225,15 @@ module.exports = class Repo
   # Public: Add files to the index.
   # 
   # files    - Array of String paths; or a String path.
+  # options  - Object (optional).
+  #            "all"   - Boolean
   # callback - Receives `(err)`.
   # 
-  add: (files, callback) ->
+  add: (files, options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    options ?= {}
     files = [files] if _.isString files
-    @git "add", {}, files, callback
+    @git "add", options, files, callback
   
   # Public: Remove files from the index.
   # 

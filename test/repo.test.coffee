@@ -13,6 +13,63 @@ Status   = require '../src/status'
 {exec}      = require 'child_process'
 
 describe "Repo", ->
+
+  describe "#add", ->
+    repo    = null
+    git_dir = __dirname + "/fixtures/junk_add"
+    status  = null
+    file    = null
+      
+    # given a fresh new repo
+    before (done) ->
+      rimraf git_dir, (err) ->
+        return done err if err
+        fs.mkdir git_dir, '0755', (err) ->
+          return done err if err
+          git.init git_dir, (err) ->
+            return done err if err
+            repo = git git_dir
+            done()
+
+    after (done) ->
+      rimraf git_dir, done
+
+    describe "with only a file", ->
+      file = 'foo.txt'
+      # given a new file
+      before (done) ->
+        fs.writeFile "#{git_dir}/#{file}", "cheese", (err) ->
+          return done err if err?
+          repo.add "#{git_dir}/#{file}", (err) ->
+            return done err if err?
+            repo.status (err, _status) ->
+              status = _status
+              done err
+      
+      it "was added", ->
+        status.files.should.have.a.property file
+        status.files[file].staged.should.be.true
+        status.files[file].tracked.should.be.true
+        status.files[file].type.should.eql 'N'
+
+    describe "with no file and all option", ->
+      file = 'bar.txt'
+      # given a new file
+      before (done) ->
+        fs.writeFile "#{git_dir}/#{file}", "cheese", (err) ->
+          return done err if err?
+          repo.add [], A:true, (err) ->
+            return done err if err?
+            repo.status (err, _status) ->
+              status = _status
+              done err
+      
+      it "was added", ->
+        status.files.should.have.a.property file
+        status.files[file].staged.should.be.true
+        status.files[file].tracked.should.be.true
+        status.files[file].type.should.eql 'N'
+
   describe "#commits", ->
     describe "with only a callback", ->
       repo    = fixtures.branched

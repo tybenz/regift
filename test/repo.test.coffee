@@ -182,9 +182,9 @@ describe "Repo", ->
         remotes[0].should.be.an.instanceof Ref
       
       it "contains the correct Refs", ->
-        remotes[0].commit.id.should.eql "80b4f47883767e410b1e533020db7bcdfacb760f"
+        remotes[0].commit.id.should.eql "bdd3996d38d885e18e5c5960df1c2c06e34d673f"
         remotes[0].name.should.eql "origin/HEAD"
-        remotes[1].commit.id.should.eql "80b4f47883767e410b1e533020db7bcdfacb760f"
+        remotes[1].commit.id.should.eql "bdd3996d38d885e18e5c5960df1c2c06e34d673f"
         remotes[1].name.should.eql "origin/master"
     
     describe "when there are no remotes", ->

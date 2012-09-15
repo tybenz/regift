@@ -1,0 +1,10 @@
+# automatic ending correction 
+* text
+
+# To avoid corrupting fixtures
+test/fixtures/remotes/* binary
+test/fixtures/remotes/hooks/* binary
+test/fixtures/remotes/info/* binary
+test/fixtures/remotes/objects/pack/* binary
+test/fixtures/remotes/refs/heads/* binary
+test/fixtures/remotes/refs/remotes/origin/* binary

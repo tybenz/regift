@@ -13,7 +13,7 @@ module.exports = Git = (git_dir, dot_git) ->
     args    ?= []
     args     = args.join " " if args instanceof Array
     bash     = "#{Git.bin} #{command} #{options} #{args}"
-    exec bash, {cwd: git_dir}, callback
+    exec bash, {cwd: git_dir, encoding:'binary'}, callback
     return bash
   
   

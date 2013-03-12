@@ -103,6 +103,16 @@ module.exports = class Repo
     , (err, stdout, stderr) ->
       callback err
   
+  # Public: Remove a remote.
+  #
+  # name     - String name of the remote.
+  # callback - Receives `(err)`
+  #
+  remote_remove: (name, callback) ->
+    @git "remote", {}, ["rm", name]
+    , (err, stdout, stderr) ->
+      callback err
+  
   # Public: `git fetch <name>`.
   # 
   # name     - String name of the remote

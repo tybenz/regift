@@ -250,12 +250,17 @@ module.exports = class Repo
   sync: (remote_name, branch, callback) ->
     [remote_name, callback, branch] = ['origin', branch, remote_name] if !callback
     [remote_name, callback, branch] = ['origin', remote_name, []]     if !branch
-    @git "stash", {}, ["save"], (err) =>
+    @status (err, status) =>
       return callback err if err
-      @git "pull", {}, [remote_name, branch], (err) =>
+      @git "stash", {}, ["save"], (err) =>
         return callback err if err
-        @git "push", {}, [remote_name, branch], (err) =>
+        @git "pull", {}, [remote_name, branch], (err) =>
           return callback err if err
-          @git "stash", {}, "pop", (err) =>
+          @git "push", {}, [remote_name, branch], (err) =>
             return callback err if err
-            return callback null
+            if not status?.clean
+              @git "stash", {}, ["pop"], (err) =>
+                return callback err if err
+                return callback null
+            else
+              return callback null

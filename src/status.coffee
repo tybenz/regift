@@ -21,4 +21,6 @@ S.Status = class Status
         continue
       file = line.substr 3
       type = line.substr 0,2
-      @files[file] = { type: type.trim(), staged: (line[0] != " " and line[0] != "?" ) , tracked: line[0] != "?"  }
+      @files[file] = { staged: (line[0] != " " and line[0] != "?" ) , tracked: line[0] != "?"  }
+      if type != "??"
+        @files[file].type = type.trim()

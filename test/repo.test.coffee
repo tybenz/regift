@@ -235,10 +235,11 @@ describe "Repo", ->
         git.init git_dir, (err) ->
           return done err if err
           repo = git(git_dir)
-          fs.writeFileSync "#{git_dir}/foo.txt", "cheese"
-          repo.add "#{git_dir}/foo.txt", (err) ->
-            return done err if err
-            repo.commit "initial commit", {all: true}, done
+          repo.identify new Actor('name', 'em@il'), ->
+            fs.writeFileSync "#{git_dir}/foo.txt", "cheese"
+            repo.add "#{git_dir}/foo.txt", (err) ->
+              return done err if err
+              repo.commit "initial commit", {all: true}, done
 
     after (done) ->
       exec "rm -rf #{ git_dir }", done

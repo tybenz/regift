@@ -5,9 +5,9 @@
 A simple Node.js wrapper for the Git CLI. The API is based on
 [Grit](https://github.com/mojombo/grit)
 
-# Installation
+# Installation (of my fresher fork)
 
-    $ npm install gift
+    $ npm install https://github.com/notatestuser/gift/tarball/compiled
 
 # API
 

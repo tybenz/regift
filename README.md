@@ -80,8 +80,14 @@ Get the string names of each of the remotes.
 ### `Repo#remote_add(name, url, callback)`
 Equivalent to `git remote add <name> <url>`.
 
+### `Repo#remote_remove(name, callback)`
+Remove a remote.
+
 ### `Repo#remote_fetch(name, callback)`
 `git fetch <name>`
+
+### `Repo#remote_push(name, callback)`
+`git push <name>`
 
 ### `Repo#status(callback)`
 Uses `--porcelain` to parse repository status in a way that is agnostic of system language. The callback receives `(err, status)`. See below for a definition of what `status` is.

@@ -12,7 +12,7 @@ A simple Node.js wrapper for the Git CLI. The API is based on
 # API
 
     git  = require 'gift'
-    
+
     repo = git "path/to/repo"
     # => #<Repo>
 
@@ -57,6 +57,16 @@ Get the difference between the trees.
 
 The callback receives `(err, diffs)`.
 
+### `Repo#identity(callback)`
+Get the commit identity for this repository.
+
+The callback receives `(err, actor)`, where `actor` is an Actor.
+
+### `Repo#identify(actor, callback)`
+Set your account's default identity for commits to this repository.
+
+The callback receives `(err)`.
+
 ### `Repo#remotes(callback)`
 Get the repository's remotes.
 
@@ -73,9 +83,8 @@ Equivalent to `git remote add <name> <url>`.
 ### `Repo#remote_fetch(name, callback)`
 `git fetch <name>`
 
-
 ### `Repo#status(callback)`
-The callback receives `(err, status)`.
+Uses `--porcelain` to parse repository status in a way that is agnostic of system language. The callback receives `(err, status)`. See below for a definition of what `status` is.
 
 ### `Repo#create_branch(name, callback)`
 Create a new branch with `name`, and call the callback when complete

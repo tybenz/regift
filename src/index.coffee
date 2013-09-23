@@ -18,3 +18,15 @@ Git.init = (path, callback) ->
   , (err, stdout, stderr) ->
     return callback err if err
     return callback err, (new Repo path)
+
+# Public: Clone a git repository.
+# 
+# repository - The repository to clone from.
+# path       - The directory to clone into.
+# callback   - Receives `(err, repo)`.
+# 
+Git.clone = (repository, path, callback) ->
+  bash = "git clone #{repository} #{path}"
+  exec bash, (err, stdout, stderr) ->
+    return callback err if err
+    return callback err, (new Repo path)

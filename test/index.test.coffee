@@ -40,6 +40,7 @@ describe "git", ->
     after (done) ->
       exec "rm -rf #{newRepositoryDir}", done
 
+  ###
   describe "clone()", ->
     @timeout 30000
     repo = null
@@ -55,3 +56,4 @@ describe "git", ->
         done()
     after (done) ->
       exec "rm -rf #{newRepositoryDir}", done
+  ###

@@ -203,7 +203,7 @@ The callback receives `(err, actor)`.
 The callback receives `(err, date)`.
 
 ## Config
-### `Status#values`
+### `Config#values`
 `Object` - The keys are dotted precisely as the console output from `git config`.
 
 ## Status

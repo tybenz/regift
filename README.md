@@ -92,6 +92,9 @@ Remove a remote.
 ### `Repo#status(callback)`
 Uses `--porcelain` to parse repository status in a way that is agnostic of system language. The callback receives `(err, status)`. See below for a definition of what `status` is.
 
+### `Repo#config(callback)`
+`git config` parsed as a simple, one-level object. The callback receives `(err, config)`.
+
 ### `Repo#create_branch(name, callback)`
 Create a new branch with `name`, and call the callback when complete
 with an error, if one occurred.
@@ -199,6 +202,10 @@ The callback receives `(err, actor)`.
 ### `Tag#tag_date(callback)`
 The callback receives `(err, date)`.
 
+## Config
+### `Status#values`
+`Object` - The keys are dotted precisely as the console output from `git config`.
+
 ## Status
 ### `Status#clean`
 `Boolean`
@@ -276,5 +283,3 @@ Get the url the submodule points to.
 
 # License
 See LICENSE.
-
-

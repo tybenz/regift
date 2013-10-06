@@ -22,15 +22,15 @@ describe "Config", ->
       config.parse GIT_CONFIG
 
       it "read the keys and values", ->
-        config.values['user.name'].should.equal 'John Doe'
-        config.values['user.email'].should.equal 'john.doe@git-scm.com'
-        config.values['core.editor'].should.equal 'pico'
+        config.items['user.name'].should.equal 'John Doe'
+        config.items['user.email'].should.equal 'john.doe@git-scm.com'
+        config.items['core.editor'].should.equal 'pico'
 
     describe "with overlapping keys", ->
       config = new Config.Config 'mock repo'
       config.parse GIT_CONFIG_DUPLICATE_KEYS
 
       it "read the keys and values", ->
-        config.values['user.name'].should.equal 'John Doe'
-        config.values['user.email'].should.equal 'john.doe@github.com'
-        config.values['core.editor'].should.equal 'emacs'
+        config.items['user.name'].should.equal 'John Doe'
+        config.items['user.email'].should.equal 'john.doe@github.com'
+        config.items['core.editor'].should.equal 'emacs'

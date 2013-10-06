@@ -9,9 +9,9 @@ C.Config = class Config
 
   # Internal: Parse the config from stdout of a `git config` command
   parse: (text)->
-    @values = {}
+    @items = {}
     for line in text.split("\n")
       if line.length == 0
         continue
       [key, value] = line.split('=')
-      @values[key] = value
+      @items[key] = value

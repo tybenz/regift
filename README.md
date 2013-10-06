@@ -204,7 +204,7 @@ The callback receives `(err, date)`.
 
 ## Config
 ### `Config#values`
-`Object` - The keys are dotted precisely as the console output from `git config`.
+`Object` - The keys are dotted precisely as the console output from `git config`. E.g., `{'user.name': 'John Doe'}`
 
 ## Status
 ### `Status#clean`

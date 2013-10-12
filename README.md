@@ -2,7 +2,7 @@
 
 ### Not active, see [this fork](https://github.com/notatestuser/gift)
 
-[![Build Status](https://secure.travis-ci.org/sentientwaffle/gift.png?branch=master)](http://travis-ci.org/sentientwaffle/gift)
+[![Build Status](https://secure.travis-ci.org/notatestuser/gift.png?branch=master)](http://travis-ci.org/notatestuser/gift)
 
 A simple Node.js wrapper for the Git CLI. The API is based on
 [Grit](https://github.com/mojombo/grit)

@@ -1,9 +1,9 @@
 { "name":        "gift"
-, "version":     "0.0.6"
+, "version":     "0.1.0"
 , "description": "a Git wrapper library"
 , "keywords":   ["git"]
-, "homepage":    "https://github.com/sentientwaffle/gift"
-, "bugs": {"url": "https://github.com/sentientwaffle/gift/issues"}
+, "homepage":    "https://github.com/notatestuser/gift"
+, "bugs": {"url": "https://github.com/notatestuser/gift/issues"}
 , "author":
   { "name": "sentientwaffle"
   , "url":  "http://sentientwaffle.github.com/"
@@ -18,7 +18,7 @@
 
 , "repository":
   { "type": "git"
-  , "url":  "https://github.com/sentientwaffle/gift.git"
+  , "url":  "https://github.com/notatestuser/gift.git"
   }
 
 , "dependencies": {"underscore": "1.x.x"}

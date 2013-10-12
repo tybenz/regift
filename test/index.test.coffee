@@ -40,13 +40,12 @@ describe "git", ->
     after (done) ->
       exec "rm -rf #{newRepositoryDir}", done
 
-  ###
   describe "clone()", ->
     @timeout 30000
     repo = null
     newRepositoryDir = "#{__dirname}/fixtures/clone"
     before (done) ->
-      git.clone "git@github.com:sentientwaffle/gift.git", newRepositoryDir, (err, _repo) ->
+      git.clone "https://github.com/notatestuser/gift.git", newRepositoryDir, (err, _repo) ->
         repo = _repo
         done err
     it "clone a repository", (done) ->
@@ -56,4 +55,3 @@ describe "git", ->
         done()
     after (done) ->
       exec "rm -rf #{newRepositoryDir}", done
-  ###

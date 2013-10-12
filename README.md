@@ -1,15 +1,11 @@
-# Gift
-
-### Not active, see [this fork](https://github.com/notatestuser/gift)
-
-[![Build Status](https://secure.travis-ci.org/notatestuser/gift.png?branch=master)](http://travis-ci.org/notatestuser/gift)
+# Gift [![Build Status](https://secure.travis-ci.org/notatestuser/gift.png?branch=master)](http://travis-ci.org/notatestuser/gift)
 
 A simple Node.js wrapper for the Git CLI. The API is based on
 [Grit](https://github.com/mojombo/grit)
 
-# Installation (of my fresher fork)
+# Installation (of this fresher fork)
 
-    $ npm install https://github.com/notatestuser/gift/tarball/compiled
+    $ npm install gift@>0.0.6
 
 # API
 

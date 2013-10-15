@@ -1,5 +1,5 @@
 { "name":        "gift"
-, "version":     "0.1.0"
+, "version":     "0.1.1"
 , "description": "a Git wrapper library"
 , "keywords":   ["git"]
 , "homepage":    "https://github.com/notatestuser/gift"

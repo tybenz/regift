@@ -1,4 +1,4 @@
-# Gift [![Build Status](https://secure.travis-ci.org/notatestuser/gift.png?branch=master)](http://travis-ci.org/notatestuser/gift)
+# Gift [![Build Status](https://secure.travis-ci.org/notatestuser/gift.png?branch=master)](http://travis-ci.org/notatestuser/gift) [![Dependency Status](https://david-dm.org/notatestuser/gift.png)](https://david-dm.org/notatestuser/gift)
 
 A simple Node.js wrapper for the Git CLI. The API is based on
 [Grit](https://github.com/mojombo/grit)

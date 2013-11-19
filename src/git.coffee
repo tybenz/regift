@@ -16,6 +16,11 @@ module.exports = Git = (git_dir, dot_git) ->
     exec bash, {cwd: git_dir}, callback
     return bash
 
+  # Public: Passthrough for raw git commands
+  #
+  git.cmd  = (command, options, args, callback) ->
+    git command, options, args, callback
+
 
   # Public: Get a list of the remote names.
   #

@@ -185,6 +185,21 @@ module.exports = class Repo
   status: (callback) ->
     return Status(this, callback)
 
+  # Public: Show information about files in the index and the 
+  #         working tree.
+  #
+  # options  - An Object of command line arguments to pass to
+  #            `git ls-files` (optional).
+  # callback - Receives `(err,stdout)`.
+  #
+  ls_files: (options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    @git "ls-files", options
+    , (err, stdout, stderr) =>
+      return callback err if err
+      return callback null, @parse_lsFiles stdout,options
+
+
   config: (callback) ->
     return Config(this, callback)
 
@@ -330,3 +345,20 @@ module.exports = class Repo
                 return callback null
             else
               return callback null
+    
+  # Internal: Parse the list of files from `git ls-files`
+  # 
+  # Return Files[]
+  parse_lsFiles: (text,options) ->
+    files = []
+    if _.has(options,'z')
+      lines   = text.split "\0"
+    else
+    	lines   = text.split "\n"
+    while lines.length
+      line =  lines.shift().split(" ")
+      files.push line
+      while lines[0]? && !lines[0].length
+        lines.shift()
+
+    return files

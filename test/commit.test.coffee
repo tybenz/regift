@@ -1,4 +1,4 @@
-should   = require('chai').should()
+should   = require 'should'
 fixtures = require './fixtures'
 git      = require '../src'
 Commit   = require '../src/commit'

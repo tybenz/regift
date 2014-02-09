@@ -3,9 +3,11 @@
 A simple Node.js wrapper for the Git CLI. The API is based on
 [Grit](https://github.com/mojombo/grit)
 
-# Installation (of this fresher fork)
+# Installation
 
-    $ npm install gift@>0.0.6
+This fork is now in the `npm` package repository. Install it like you would any other package:
+
+    $ npm install gift
 
 # API
 

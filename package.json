@@ -1,9 +1,11 @@
 {
   "name": "gift",
-  "version": "0.1.3-1",
+  "version": "0.1.3-2",
   "description": "a Git wrapper library",
   "keywords": [
-    "git"
+    "git",
+    "cli",
+    "wrapper"
   ],
   "homepage": "https://github.com/notatestuser/gift",
   "bugs": {

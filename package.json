@@ -17,8 +17,9 @@
   },
   "main": "./lib/index",
   "scripts": {
-    "test": "mocha --compilers coffee:'./node_modules/coffee-script/lib/coffee-script/coffee-script'",
-    "prepublish": "coffee -o lib -c src"
+    "test": "mocha --compilers coffee:coffee-script",
+    "prepublish": "coffee -o lib -c src",
+    "postinstall": "coffee -o lib -c src"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,8 @@
     "should": "~2.0.1",
     "mocha": "1.x.x",
     "sinon": "~1.7.3",
-    "coffee-script": "1.6.x"
+    "coffee-script": "1.6.x",
+    "rimraf":      "2.0.x"
   },
   "engines": {
     "node": "> 0.4.1"

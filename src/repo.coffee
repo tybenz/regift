@@ -284,24 +284,30 @@ module.exports = class Repo
   # options  - Object (optional).
   #            "amend" - Boolean
   #            "all"   - Boolean
+  #            "author"- String formated like: A U Thor <author@example.com>
   # callback - Receives `(err)`.
   #
   commit: (message, options, callback) ->
     [options, callback] = [callback, options] if !callback
     options ?= {}
-    options = _.extend options, {m: "'#{message}'"}
-    @git "commit", options, (err, stdout, stderr) ->
-      callback err
+    options = _.extend options, {m: "\"#{message}\""}
+    # add quotes around author
+    options.author = "\"#{options.author}\"" if options.author?
+    @git "commit", options, callback
 
   # Public: Add files to the index.
   #
   # files    - Array of String paths; or a String path.
+  # options  - Object (optional).
+  #            "all"   - Boolean
   # callback - Receives `(err)`.
-  #
-  add: (files, callback) ->
+  # 
+  add: (files, options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    options ?= {}
     files = [files] if _.isString files
-    @git "add", {}, files, callback
-
+    @git "add", options, files, callback
+  
   # Public: Remove files from the index.
   #
   # files    - Array of String paths; or a String path.

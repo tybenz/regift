@@ -13,7 +13,7 @@ module.exports = Git = (git_dir, dot_git) ->
     args    ?= []
     args     = args.join " " if args instanceof Array
     bash     = "#{Git.bin} #{command} #{options} #{args}"
-    exec bash, {cwd: git_dir}, callback
+    exec bash, {cwd: git_dir, encoding:'binary'}, callback
     return bash
 
   # Public: Passthrough for raw git commands
@@ -41,6 +41,8 @@ module.exports = Git = (git_dir, dot_git) ->
     prefix              = "refs/#{type}s/"
 
     git "show-ref", (err, text) ->
+      # ignore error code 1: means no match
+      err = null if err?.code is 1
       matches = []
       for line in (text || "").split("\n")
         continue if !line

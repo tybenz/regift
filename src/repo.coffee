@@ -73,6 +73,9 @@ module.exports = class Repo
   #
   #   # Skip some (for pagination):
   #   repo.commits "master", 30, 30, (err, commits) ->
+  #   
+  #   # Do not limit commits amount
+  #   repo.commits "master", -1, (err, commits) ->
   #
   commits: (start, limit, skip, callback) ->
     [skip,  callback] = [callback, skip]  if !callback
@@ -82,8 +85,12 @@ module.exports = class Repo
     start ?= "master"
     limit ?= 10
     skip  ?= 0
+    options = {skip}
 
-    Commit.find_all this, start, {"max-count": limit, skip}, callback
+    if limit != -1
+      options["max-count"] = limit
+
+    Commit.find_all this, start, options, callback
 
 
   # Internal: Returns current commit id 

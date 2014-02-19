@@ -86,6 +86,27 @@ module.exports = class Repo
     Commit.find_all this, start, {"max-count": limit, skip}, callback
 
 
+  # Internal: Returns current commit id 
+  # 
+  # callback - Receives `(err, id)`.
+  # 
+  current_commit_id: (callback) ->
+    @git "rev-parse HEAD", {}, []
+    , (err, stdout, stderr) =>
+      return callback err if err
+      return callback null, _.first stdout.split "\n"
+
+
+  # Public: 
+  # 
+  # callback - Receives `(err, commit)`
+  # 
+  current_commit: (callback) ->
+    @current_commit_id (err, commit_id) =>
+      return callback err if err
+      Commit.find this, commit_id, callback
+
+
   # Public: The tree object for the treeish or master.
   #
   # treeish - String treeish (such as a branch or tag) (optional).

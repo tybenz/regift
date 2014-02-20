@@ -73,6 +73,9 @@ module.exports = class Repo
   #
   #   # Skip some (for pagination):
   #   repo.commits "master", 30, 30, (err, commits) ->
+  #   
+  #   # Do not limit commits amount
+  #   repo.commits "master", -1, (err, commits) ->
   #
   commits: (start, limit, skip, callback) ->
     [skip,  callback] = [callback, skip]  if !callback
@@ -82,8 +85,33 @@ module.exports = class Repo
     start ?= "master"
     limit ?= 10
     skip  ?= 0
+    options = {skip}
 
-    Commit.find_all this, start, {"max-count": limit, skip}, callback
+    if limit != -1
+      options["max-count"] = limit
+
+    Commit.find_all this, start, options, callback
+
+
+  # Internal: Returns current commit id 
+  # 
+  # callback - Receives `(err, id)`.
+  # 
+  current_commit_id: (callback) ->
+    @git "rev-parse HEAD", {}, []
+    , (err, stdout, stderr) =>
+      return callback err if err
+      return callback null, _.first stdout.split "\n"
+
+
+  # Public: 
+  # 
+  # callback - Receives `(err, commit)`
+  # 
+  current_commit: (callback) ->
+    @current_commit_id (err, commit_id) =>
+      return callback err if err
+      Commit.find this, commit_id, callback
 
 
   # Public: The tree object for the treeish or master.

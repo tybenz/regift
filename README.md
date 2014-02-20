@@ -63,13 +63,22 @@ Or to a different tag or branch.
 
     repo.commits "v0.0.3", (err, commits) ->
 
-Limit the maximum number of commits returned.
+Limit the maximum number of commits returned (by default limit is 10).
 
     repo.commits "master", 30, (err, commits) ->
 
 Skip some (for pagination):
 
     repo.commits "master", 30, 30, (err, commits) ->
+
+To get unlimited amount of commits:
+
+    repo.commits "master", -1, (err, commits) ->
+
+### `Repo#current_commit(callback)`
+Get current commit
+
+The callback receives `(err, commit)`.
 
 ### `Repo#tree([treeish]) => Tree`
 The `Tree` object for the treeish (which defaults to "master").

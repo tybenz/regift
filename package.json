@@ -17,9 +17,8 @@
   },
   "main": "./lib/index",
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script",
-    "prepublish": "coffee -o lib -c src",
-    "postinstall": "coffee -o lib -c src"
+    "test": "mocha --compilers coffee:'./node_modules/coffee-script/lib/coffee-script/coffee-script'",
+    "prepublish": "coffee -o lib -c src"
   },
   "repository": {
     "type": "git",

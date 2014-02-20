@@ -71,12 +71,12 @@ Skip some (for pagination):
 
     repo.commits "master", 30, 30, (err, commits) ->
 
-To get unlimited amount of commits:
+Or get an unlimited number of commits (there could be a lot):
 
     repo.commits "master", -1, (err, commits) ->
 
 ### `Repo#current_commit(callback)`
-Get current commit
+Get the current commit.
 
 The callback receives `(err, commit)`.
 

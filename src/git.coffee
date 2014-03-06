@@ -1,5 +1,5 @@
 fs     = require 'fs'
-{exec} = require 'child_process'
+{exec, spawn} = require 'child_process'
 
 module.exports = Git = (git_dir, dot_git) ->
   dot_git ||= "#{git_dir}/.git"
@@ -21,6 +21,19 @@ module.exports = Git = (git_dir, dot_git) ->
   git.cmd  = (command, options, args, callback) ->
     git command, options, args, callback
 
+  # Public: stream results of git command
+  #
+  # This is used for large files that you'd need to stream.
+  #
+  # returns [outstream, errstream]
+  #
+  git.streamCmd = (command, options, args) ->
+    options ?= {}
+    options  = options_to_argv options
+    args    ?= []
+    allargs = [command].concat(options).concat(args)
+    process  = spawn Git.bin, allargs, {cwd: git_dir, encoding: 'binary'}
+    return [process.stdout, process.stderr]
 
   # Public: Get a list of the remote names.
   #

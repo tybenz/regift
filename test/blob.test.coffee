@@ -43,3 +43,36 @@ describe "Blob", ->
         data.should.be.type "string"
         data.should.include "!!!"
 
+  describe "#dataStream", ->
+    describe "of a file off the root", ->
+      repo = git "#{__dirname}/fixtures/branched"
+      data = ""
+      before (done) ->
+        repo.tree().blobs (err, blobs) ->
+          [dataStream, _] = blobs[0].dataStream()
+          dataStream.on 'data', (buf) ->
+            data += buf.toString()
+          .on 'end', ->
+            done()
+
+      it "is a string", ->
+        data.should.be.type "string"
+        data.should.include "Bla"
+
+    describe "of a file in a subdir", ->
+      repo = git "#{__dirname}/fixtures/branched"
+      data = ""
+      before (done) ->
+        repo.tree().trees (err, trees) ->
+          trees[0].blobs (err, blobs) ->
+            [dataStream, _] = blobs[0].dataStream()
+            dataStream.on 'data', (buf) ->
+              data += buf.toString()
+            .on 'end', ->
+              done()
+
+      it "is a string", ->
+        data.should.be.type "string"
+        data.should.include "!!!"
+
+

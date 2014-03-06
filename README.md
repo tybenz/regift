@@ -302,6 +302,25 @@ Each file has the following properties:
 
   * `callback` - `(err, data)`
 
+Warning: this method only returns the complete file up to 200k, which is the default
+buffer size for running child_process.exec(). If the file you're reading is bigger than
+that, or if you're not sure, you need to use dataStream()
+
+### `Blob#dataStream()`
+
+  * returns - [dataStream, errorStream]
+
+Returns streams for you to use to get the data.
+
+Usage:
+
+    data = ""
+    [dataStream, _] = blob.dataStream()
+    dataStream.on 'data', (buf) ->
+      data += buf.toString()
+    .on 'end', ->
+      callback(data)
+
 ## Submodule
 ### `Submodule#id`
 `String`

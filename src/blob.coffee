@@ -8,10 +8,26 @@ module.exports = class Blob
   # 
   # callback - Receives `(err, data)`.
   # 
+  # Warning, this only returns files less than 200k, the standard buffer size for 
+  # node's exec(). If you need to get bigger files, you should use dataStream() to
+  # get a stream for the file's data
+  #
   data: (callback) ->
     @repo.git "cat-file", {p: true}, @id
     , (err, stdout, stderr) ->
       return callback err, stdout
   
+  # Public: Get the blob contents as a stream
+  #
+  # returns - [dataStream, errstream]
+  #
+  # Usage:
+  #   [blobstream, _] = blob.dataStream()
+  #   blobstream.pipe(res)
+  #
+  dataStream: () ->
+    streams = @repo.git.streamCmd "cat-file", {p: true}, [@id]
+    return streams
+
   toString: ->
     "#<Blob '#{@id}'>"

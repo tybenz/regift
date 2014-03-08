@@ -4,9 +4,12 @@ module.exports = class Diff
   constructor: (@repo, @a_path, @b_path, a_blob, b_blob
   , @a_mode, @b_mode, @new_file, @deleted_file, @diff
   , @renamed_file=false, @similarity_index=0) ->
-    @a_blob = new Blob @repo, {id: a_blob} if a_blob
-    @b_blob = new Blob @repo, {id: b_blob} if b_blob
-  
+    if a_blob isnt null
+      @a_blob = new Blob @repo, {id: a_blob}
+      @a_sha = a_blob
+    if b_blob isnt null
+      @b_blob = new Blob @repo, {id: b_blob}
+      @b_sha = b_blob
   
   toJSON: ->
     {@a_path, @b_path, @a_mode, @b_mode, @new_file
@@ -22,6 +25,7 @@ module.exports = class Diff
     diffs = []
     
     while lines.length && lines[0]
+      # FIXME shift is O(n), so iterating n over O(n) operation might be O(n^2)
       [m, a_path, b_path] = ///^diff\s--git\s"?a/(.+?)"?\s"?b/(.+)"?$///.exec lines.shift()
       
       if /^old mode/.test lines[0]

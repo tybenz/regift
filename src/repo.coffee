@@ -128,14 +128,32 @@ module.exports = class Repo
   # commitA  - A Commit or String commit id.
   # commitB  - A Commit or String commit id.
   # paths    - A list of String paths to restrict the difference to (optional).
+  # options  - An object of options to pass to git diff (optional)
   # callback - A Function which receives `(err, diffs)`.
   #
-  diff: (commitA, commitB, paths, callback) ->
-    [callback, paths] = [paths, callback] if !callback
-    paths ?= []
+  # Possible forms of the method:
+  #
+  # diff(commitA, commitB, callback)
+  # diff(commitA, commitB, paths, callback)
+  # diff(commitA, commitB, options, callback)
+  # diff(commitA, commitB, paths, options, callback)
+  #
+  diff: (commitA, commitB) ->
+    [paths, options] = [[], {}]
+    if arguments.length is 3
+      callback = arguments[2]
+    else if arguments.length is 4
+      callback = arguments[3]
+      if arguments[2] instanceof Array
+        paths = arguments[2]
+      else if arguments[2] instanceof Object
+        options = arguments[2]
+    else if arguments.length is 5
+      [paths, options, callback] = arguments.slice(2)
+
     commitA = commitA.id if _.isObject(commitA)
     commitB = commitB.id if _.isObject(commitB)
-    @git "diff", {}, _.flatten([commitA, commitB, "--", paths])
+    @git "diff", options, _.flatten([commitA, commitB, "--", paths])
     , (err, stdout, stderr) =>
       return callback err if err
       return callback err, Diff.parse(this, stdout)

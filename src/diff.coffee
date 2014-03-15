@@ -83,9 +83,6 @@ module.exports = class Diff
       deleted_file = status is 'D'
       renamed_file = status is 'R'
 
-      console.log a_path, b_path, a_sha, b_sha, a_mode, b_mode,
-        new_file, deleted_file, null, renamed_file, null
-
       diffs.push new Diff(
         repo, a_path, b_path, a_sha, b_sha, a_mode, b_mode,
         new_file, deleted_file, null, renamed_file, null

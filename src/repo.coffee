@@ -156,7 +156,10 @@ module.exports = class Repo
     @git "diff", options, _.flatten([commitA, commitB, "--", paths])
     , (err, stdout, stderr) =>
       return callback err if err
-      return callback err, Diff.parse(this, stdout)
+      if _.has(options, 'raw')
+        return callback err, Diff.parse_raw(this, stdout)
+      else
+        return callback err, Diff.parse(this, stdout)
 
 
   # Public: Get the repository's remotes.

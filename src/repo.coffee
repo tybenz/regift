@@ -388,7 +388,7 @@ module.exports = class Repo
 
     @status (err, status) =>
       return callback err if err
-      @git "stash", {}, ["save"], (err) =>
+      @git "stash", {}, ["save", "-u"], (err) =>
         return callback err if err
         @git "pull", {}, [remote, branch], (err) =>
           return callback err if err

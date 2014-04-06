@@ -3,7 +3,7 @@ Actor = require './actor'
 Tree  = require './tree'
 
 module.exports = class Commit
-  constructor: (@repo, @id, parents, tree, @author, @authored_date, @committer, @committed_date, @message) ->
+  constructor: (@repo, @id, parents, tree, @author, @authored_date, @committer, @committed_date, @gpgsig, @message) ->
     # Public: Get the commit's Tree.
     # 
     # Returns Tree.
@@ -76,10 +76,17 @@ module.exports = class Commit
       [author, authored_date] = @actor author_line
       
       committer_line = lines.shift()
-      if lines[0] && !/^encoding/.test(lines[0])
+      if lines[0] && !/(^encoding|^gpgsig)/.test(lines[0])
         committer_line.push lines.shift()
       [committer, committed_date] = @actor committer_line
       
+      gpgsig = []
+      if /^gpgsig/.test lines[0]
+        gpgsig.push lines.shift().replace /^gpgsig /, ''
+        while !/^ -----END PGP SIGNATURE-----$/.test lines[0]
+          gpgsig.push lines.shift()
+        gpgsig.push lines.shift()
+
       # not doing anything with this yet, but it's sometimes there
       if /^encoding/.test lines.first
         encoding = _.last lines.shift().split(" ")
@@ -93,7 +100,7 @@ module.exports = class Commit
       while lines[0]? && !lines[0].length
         lines.shift()
 
-      commits.push new Commit(repo, id, parents, tree, author, authored_date, committer, committed_date, message_lines.join("\n"))
+      commits.push new Commit(repo, id, parents, tree, author, authored_date, committer, committed_date, gpgsig.join("\n"), message_lines.join("\n"))
     return commits
   
   

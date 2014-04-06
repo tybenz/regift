@@ -84,7 +84,7 @@ module.exports = class Commit
         gpgsig.push lines.shift()
 
       # not doing anything with this yet, but it's sometimes there
-      if /^encoding/.test lines.first
+      if /^encoding/.test lines[0]
         encoding = _.last lines.shift().split(" ")
       
       lines.shift()

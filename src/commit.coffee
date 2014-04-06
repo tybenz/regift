@@ -71,13 +71,9 @@ module.exports = class Commit
         parents.push _.last lines.shift().split(" ")
       
       author_line = lines.shift()
-      if !/^committer /.test(lines[0])
-        author_line.push lines.shift()
       [author, authored_date] = @actor author_line
       
       committer_line = lines.shift()
-      if lines[0] && !/(^encoding|^gpgsig)/.test(lines[0])
-        committer_line.push lines.shift()
       [committer, committed_date] = @actor committer_line
       
       gpgsig = []

@@ -248,6 +248,35 @@ describe "Repo", ->
       it "returns 2 commits", ->
         commits[0].message.should.include "commit 4"
 
+    describe "with or without gpg signature", ->
+      repo    = fixtures.gpgsigned
+      commits = null
+      before (done) ->
+        repo.commits "master", (err, _commits) ->
+          commits = _commits
+          done err
+
+      it "has no gpgsig", ->
+        commits[0].gpgsig.should.not.be.ok
+
+      it "has gpgsig", ->
+        commits[1].gpgsig.should.be.ok
+
+      it "contains the correct signature", ->
+        commits[1].gpgsig.should.equal """
+        -----BEGIN PGP SIGNATURE-----
+         Version: GnuPG v2.0.22 (GNU/Linux)
+         
+         iQEcBAABAgAGBQJTQw8qAAoJEL0/h9tqDFPiP3UH/RwxUS90+6DEkThcKMmV9H4K
+         dr+D0H0z2ViMq3AHSmCydv5dWr3bupl2XyaLWWuRCxAJ78xuf98qVRIBfT/FKGeP
+         fz+GtXkv3naCD12Ay6YiwfxSQhxFiJtRwP5rla2i7hlV3BLFPYCWTtL8OLF4CoRm
+         7aF5EuDr1x7emEDyu1rf5E59ttSIySuIw0J1mTjrPCkC6lsowzTJS/vaCxZ3e7fN
+         iZE6VEWWY/iOxd8foJH/VZ3cfNKjfi8+Fh8t7o9ztjYTQAOZUJTn2CHB7Wkyr0Ar
+         HNM3v26gPFpb7UkHw0Cq2HWNV/Z7cbQc/BQ4HmrmuBPB6SWNOaBN751BbQKnPcA=
+         =IusH
+         -----END PGP SIGNATURE-----
+        """
+
   describe "#tree", ->
     repo = fixtures.branched
     describe "master", ->

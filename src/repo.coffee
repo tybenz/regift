@@ -400,6 +400,27 @@ module.exports = class Repo
                 return callback null
             else
               return callback null
+              
+  # Public: Pull the remotes from the master.
+  #
+  # Arguments: ([[remote_name, ]branch_name, ]callback)
+  #
+  # remote_name - String (optional).
+  # branch_name - String.
+  # callback - Receives `(stderr)`.
+  #
+  pull: (remote_name, branch_name, callback) ->
+
+    # handle 'curried' arguments
+    [remote, branch] = [remote_name, branch_name]                     if typeof callback    is "function"
+    [remote, branch, callback] = ["origin", remote_name, branch_name] if typeof branch_name is "function"
+    [remote, branch, callback] = ["origin", "master", remote_name]    if typeof remote_name is "function"
+
+    @status (err, status) =>
+      return callback err if err
+      @git "pull", {}, [remote, branch], (err) =>
+        return callback err if err
+        return callback null
     
   # Internal: Parse the list of files from `git ls-files`
   # 

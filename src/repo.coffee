@@ -360,11 +360,15 @@ module.exports = class Repo
   # Public: Remove files from the index.
   #
   # files    - Array of String paths; or a String path.
+  # options  - Object (optional).
+  #            "recursive" - Boolean
   # callback - Receives `(err)`.
   #
-  remove: (files, callback) ->
+  remove: (files, options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    options ?= {}
     files = [files] if _.isString files
-    @git "rm", {}, files, callback
+    @git "rm", options, files, callback
 
   # Public: Revert the given commit.
   revert: (sha, callback) ->

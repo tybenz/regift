@@ -149,7 +149,7 @@ module.exports = class Repo
       else if arguments[2] instanceof Object
         options = arguments[2]
     else if arguments.length is 5
-      [paths, options, callback] = arguments.slice(2)
+      [paths, options, callback] = Array.prototype.slice.call(arguments, 2)
 
     commitA = commitA.id if _.isObject(commitA)
     commitB = commitB.id if _.isObject(commitB)

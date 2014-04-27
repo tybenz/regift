@@ -381,7 +381,7 @@ module.exports = class Repo
   #
   # remote_name - String (optional).
   # branch_name - String.
-  # callback - Receives `(err)`.
+  # callback - Receives `(stderr)`.
   #
   sync: (remote_name, branch_name, callback) ->
 
@@ -392,15 +392,15 @@ module.exports = class Repo
 
     @status (err, status) =>
       return callback err if err
-      @git "stash", {}, ["save", "-u"], (err) =>
-        return callback err if err
-        @git "pull", {}, [remote, branch], (err) =>
-          return callback err if err
-          @git "push", {}, [remote, branch], (err) =>
-            return callback err if err
+      @git "stash", {}, ["save", "-u"], (err, stdout, stderr) =>
+        return callback stderr if err
+        @git "pull", {}, [remote, branch], (err, stdout, stderr) =>
+          return callback stderr if err
+          @git "push", {}, [remote, branch], (err, stdout, stderr) =>
+            return callback stderr if err
             if not status?.clean
-              @git "stash", {}, ["pop"], (err) =>
-                return callback err if err
+              @git "stash", {}, ["pop"], (err, stdout, stderr) =>
+                return callback stderr if err
                 return callback null
             else
               return callback null

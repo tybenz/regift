@@ -210,10 +210,17 @@ module.exports = class Repo
   # Public: `git push <name>`.
   #
   # name     - String name of the remote
+  # branch   - (optional) Branch to push
   # callback - Receives `(err)`.
   #
-  remote_push: (name, callback) ->
-    @git "push", {}, name
+  remote_push: (name, branch, callback) ->
+    if !callback
+      callback = branch
+      args = name
+    else
+      args = [name, branch]
+
+    @git "push", {}, args
     , (err, stdout, stderr) ->
       callback err
 

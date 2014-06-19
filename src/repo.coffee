@@ -368,7 +368,7 @@ module.exports = class Repo
     options ?= {}
     files ?= '.'
     files = [files] if _.isString files
-    @git "checkout", options, _.flatten ['--', files], callback
+    @git "checkout", options, _.flatten(['--', files]), callback
 
   # Public: Commit some code.
   #

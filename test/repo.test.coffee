@@ -224,7 +224,7 @@ describe "Repo", ->
           done err
 
       it "is the latest commit on the tag", ->
-        commits[0].message.should.include "commit 5"
+        commits[0].message.should.containEql "commit 5"
 
     describe "limit the number of commits", ->
       repo    = fixtures.tagged
@@ -246,7 +246,7 @@ describe "Repo", ->
           done err
 
       it "returns 2 commits", ->
-        commits[0].message.should.include "commit 4"
+        commits[0].message.should.containEql "commit 4"
 
     describe "with or without gpg signature", ->
       repo    = fixtures.gpgsigned
@@ -286,8 +286,8 @@ describe "Repo", ->
       it "checks out branch:master", (done) ->
         repo.tree().blobs (err, blobs) ->
           blobs[0].data (err, data) ->
-            data.should.include "Bla"
-            data.should.not.include "Bla2"
+            data.should.containEql "Bla"
+            data.should.not.containEql "Bla2"
             done err
 
     describe "specific branch", ->
@@ -297,7 +297,7 @@ describe "Repo", ->
       it "checks out branch:something", (done) ->
         repo.tree("something").blobs (err, blobs) ->
           blobs[0].data (err, data) ->
-            data.should.include "Bla2"
+            data.should.containEql "Bla2"
             done err
 
 

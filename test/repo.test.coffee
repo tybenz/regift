@@ -1,7 +1,7 @@
 should   = require 'should'
 sinon    = require 'sinon'
 
-fs       = require 'fs'
+fs       = require 'fs-extra'
 rimraf   = require 'rimraf'
 fixtures = require './fixtures'
 git      = require '../src'
@@ -22,7 +22,7 @@ describe "Repo", ->
     git_dir = __dirname + "/fixtures/junk_add"
     status  = null
     file    = null
-      
+
     # given a fresh new repo
     before (done) ->
       rimraf git_dir, (err) ->
@@ -48,7 +48,7 @@ describe "Repo", ->
             repo.status (err, _status) ->
               status = _status
               done err
-      
+
       it "was added", ->
         status.files.should.have.a.property file
         status.files[file].staged.should.be.true
@@ -66,7 +66,7 @@ describe "Repo", ->
             repo.status (err, _status) ->
               status = _status
               done err
-      
+
       it "was added", ->
         status.files.should.have.a.property file
         status.files[file].staged.should.be.true
@@ -154,7 +154,7 @@ describe "Repo", ->
                 return done err if err?
                 repo.add "#{git_dir}/foo.txt", (err) ->
                   return done err if err?
-                  repo.commit 'message with spaces', 
+                  repo.commit 'message with spaces',
                     author: 'Someone <someone@somewhere.com>'
                   , (err) ->
                     return done err if err?
@@ -266,7 +266,7 @@ describe "Repo", ->
         commits[1].gpgsig.should.equal """
         -----BEGIN PGP SIGNATURE-----
          Version: GnuPG v2.0.22 (GNU/Linux)
-         
+
          iQEcBAABAgAGBQJTQw8qAAoJEL0/h9tqDFPiP3UH/RwxUS90+6DEkThcKMmV9H4K
          dr+D0H0z2ViMq3AHSmCydv5dWr3bupl2XyaLWWuRCxAJ78xuf98qVRIBfT/FKGeP
          fz+GtXkv3naCD12Ay6YiwfxSQhxFiJtRwP5rla2i7hlV3BLFPYCWTtL8OLF4CoRm
@@ -487,3 +487,112 @@ describe "Repo", ->
           should.exist err
           done()
 
+  describe "#reset", ->
+    repo    = null
+    git_dir = __dirname + "/fixtures/junk_reset"
+    status  = null
+    file    = "bla.txt"
+
+    # given a fresh new repo
+    beforeEach (done) ->
+      status = null
+      rimraf git_dir, (err) ->
+        return done err if err
+        fs.copy "#{__dirname}/fixtures/reset", "#{git_dir}", (err) ->
+          return done err if err
+          fs.rename "#{git_dir}/git.git", "#{git_dir}/.git", (err) ->
+            return done err if err
+            repo = git git_dir
+            fs.writeFile "#{git_dir}/#{file}", "hello", (err) ->
+              return done err if err?
+              repo.add "#{git_dir}/#{file}", (err) ->
+                done err
+
+    after (done) ->
+      rimraf git_dir, (err) ->
+        done err
+
+    describe "reset without specific treeish (defaults to HEAD)", ->
+      describe "reset (--mixed)", ->
+        beforeEach (done) ->
+          repo.reset ->
+            repo.status (err, _status) ->
+              status = _status
+              done err
+
+        it "removes the file from index, leaves it in working tree", ->
+          status.files.should.have.a.property file
+          status.files[file].staged.should.be.false
+          status.files[file].tracked.should.be.false
+          status.files[file].should.not.have.a.property 'type'
+
+      describe "reset --soft", ->
+        beforeEach (done) ->
+          repo.reset {soft: true}, ->
+            repo.status (err, _status) ->
+              status = _status
+              done err
+
+        it "leaves the added file in the index", ->
+          status.files.should.have.a.property file
+          status.files[file].staged.should.be.true
+          status.files[file].tracked.should.be.true
+          status.files[file].type.should.eql 'A'
+
+      describe "reset --hard", ->
+        beforeEach (done) ->
+          repo.reset {hard: true}, ->
+            repo.status (err, _status) ->
+              status = _status
+              done err
+
+        it "removes the file from index and working tree", ->
+          status.files.should.not.have.a.property file
+
+    describe "reset to specific treeish", ->
+      describe "reset (--mixed) HEAD~1", ->
+        beforeEach (done) ->
+          repo.reset 'HEAD~1', ->
+            repo.status (err, _status) ->
+              status = _status
+              done err
+
+        it "resets to HEAD~1, changes stay in the working tree", ->
+          status.files.should.have.a.property file
+          status.files[file].staged.should.be.false
+          status.files[file].tracked.should.be.false
+          status.files[file].should.not.have.a.property 'type'
+
+          status.files.should.have.a.property 'rawr.txt'
+          status.files['rawr.txt'].staged.should.be.false
+          status.files['rawr.txt'].tracked.should.be.false
+          status.files['rawr.txt'].should.not.have.a.property 'type'
+
+      describe "reset --soft HEAD~1", ->
+        beforeEach (done) ->
+          repo.reset 'HEAD~1', {soft: true}, ->
+            repo.status (err, _status) ->
+              status = _status
+              done err
+
+        it "resets to HEAD~1, changes stay in the index and working tree", ->
+          status.files.should.have.a.property file
+          status.files[file].staged.should.be.true
+          status.files[file].tracked.should.be.true
+          status.files[file].type.should.eql 'A'
+
+          status.files.should.have.a.property 'rawr.txt'
+          status.files['rawr.txt'].staged.should.be.true
+          status.files['rawr.txt'].tracked.should.be.true
+          status.files['rawr.txt'].type.should.eql 'AM'
+
+      describe "reset --hard HEAD~1", ->
+        beforeEach (done) ->
+          repo.reset 'HEAD~1', {hard: true}, ->
+            repo.status (err, _status) ->
+              status = _status
+              done err
+
+        it "resets to HEAD~1, all changes get discarded completely", ->
+          status.files.should.not.have.a.property file
+          status.files.should.not.have.a.property 'rawr.txt'

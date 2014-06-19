@@ -596,3 +596,59 @@ describe "Repo", ->
         it "resets to HEAD~1, all changes get discarded completely", ->
           status.files.should.not.have.a.property file
           status.files.should.not.have.a.property 'rawr.txt'
+
+  describe.only "#checkoutFile", ->
+    repo    = null
+    git_dir = __dirname + "/fixtures/junk_checkoutFile"
+    status  = null
+    file    = "bla.txt"
+
+    # given a fresh new repo
+    beforeEach (done) ->
+      status = null
+      rimraf git_dir, (err) ->
+        return done err if err
+        fs.copy "#{__dirname}/fixtures/reset", "#{git_dir}", (err) ->
+          return done err if err
+          fs.rename "#{git_dir}/git.git", "#{git_dir}/.git", (err) ->
+            return done err if err
+            repo = git git_dir
+            fs.writeFile "#{git_dir}/#{file}", "hello", (err) ->
+              return done err if err?
+              repo.add "#{git_dir}/#{file}", (err) ->
+                done err
+
+    after (done) ->
+      rimraf git_dir, (err) ->
+        done err
+
+    describe "passing no explicit files", ->
+      beforeEach (done) ->
+        repo.checkoutFile ->
+          repo.status (err, _status) ->
+            status = _status
+            done err
+
+      it "discards changes in the working tree for all files", ->
+        status.files.should.have.a.property file
+        status.files[file].staged.should.be.true
+        status.files[file].tracked.should.be.true
+        status.files[file].type.should.eql 'A'
+
+        status.files.should.have.a.property 'rawr.txt'
+        status.files['rawr.txt'].staged.should.be.true
+        status.files['rawr.txt'].tracked.should.be.true
+        status.files['rawr.txt'].type.should.eql 'M'
+
+    describe "passing an explicit file", ->
+      beforeEach (done) ->
+        repo.checkoutFile 'rawr.txt', ->
+          repo.status (err, _status) ->
+            status = _status
+            done err
+
+      it "discard changes to the specified file", ->
+        status.files.should.have.a.property 'rawr.txt'
+        status.files['rawr.txt'].staged.should.be.true
+        status.files['rawr.txt'].tracked.should.be.true
+        status.files['rawr.txt'].type.should.eql 'M'

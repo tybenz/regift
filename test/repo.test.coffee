@@ -597,7 +597,7 @@ describe "Repo", ->
           status.files.should.not.have.a.property file
           status.files.should.not.have.a.property 'rawr.txt'
 
-  describe.only "#checkoutFile", ->
+  describe "#checkoutFile", ->
     repo    = null
     git_dir = __dirname + "/fixtures/junk_checkoutFile"
     status  = null

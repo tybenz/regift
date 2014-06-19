@@ -333,17 +333,40 @@ module.exports = class Repo
   checkout: (treeish, callback) ->
     @git "checkout", {}, treeish, callback
 
+  # Public: Reset the git repo.
+  #
+  # treeish  - The {String} to reset to.
+  # options  - The {object} containing one of the following items:
+  #   :soft  - {Boolean)
+  #   :mixed - {Boolean)
+  #   :hard  - {Boolean)
+  #   :merge - {Boolean)
+  #   :keep  - {Boolean)
+  # callback - The {Function} to callback.
+  #
+  reset: (treeish, options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    [treeish, callback] = [callback, treeish] if !callback
+    [treeish, options]  = [options, treeish]  if typeof treeish is 'object'
+    treeish ?= 'HEAD'
+    options ?= {}
+
+    @git "reset", options, treeish, callback
+
   # Public: Checkout file(s) to the index
   #
   # files    - Array of String paths; or a String path. If you want to
-  #            checkout all files pass '.'.
+  #            checkout all files pass '.'.'
   # options  - Object (optional).
   #            "force" - Boolean
   # callback - Receives `(err)`.
   #
   checkoutFile: (files, options, callback) ->
     [options, callback] = [callback, options] if !callback
+    [files, callback]   = [callback, files]   if !callback
+    [files, options]    = [options, files]    if typeof files is 'object'
     options ?= {}
+    files ?= '.'
     files = [files] if _.isString files
     @git "checkout", options, _.flatten['--', files], callback
 

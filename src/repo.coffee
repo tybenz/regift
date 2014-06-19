@@ -336,7 +336,7 @@ module.exports = class Repo
   # Public: Reset the git repo.
   #
   # treeish  - The {String} to reset to.
-  # options  - The {object} containing one of the following items:
+  # options  - The {Object} containing one of the following items:
   #   :soft  - {Boolean)
   #   :mixed - {Boolean) When no other option given git defaults to 'mixed'.
   #   :hard  - {Boolean)

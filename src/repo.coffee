@@ -338,7 +338,7 @@ module.exports = class Repo
   # treeish  - The {String} to reset to.
   # options  - The {object} containing one of the following items:
   #   :soft  - {Boolean)
-  #   :mixed - {Boolean)
+  #   :mixed - {Boolean) When no other option given git defaults to 'mixed'.
   #   :hard  - {Boolean)
   #   :merge - {Boolean)
   #   :keep  - {Boolean)
@@ -368,7 +368,7 @@ module.exports = class Repo
     options ?= {}
     files ?= '.'
     files = [files] if _.isString files
-    @git "checkout", options, _.flatten['--', files], callback
+    @git "checkout", options, _.flatten ['--', files], callback
 
   # Public: Commit some code.
   #

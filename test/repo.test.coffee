@@ -501,11 +501,12 @@ describe "Repo", ->
           return done err if err
           fs.rename "#{git_dir}/git.git", "#{git_dir}/.git", (err) ->
             return done err if err
-            repo = git git_dir
-            fs.writeFile "#{git_dir}/#{file}", "hello", (err) ->
-              return done err if err?
-              repo.add "#{git_dir}/#{file}", (err) ->
-                done err
+            git.init git_dir, (err) ->
+              repo = git git_dir
+              fs.writeFile "#{git_dir}/#{file}", "hello", (err) ->
+                return done err if err?
+                repo.add "#{git_dir}/#{file}", (err) ->
+                  done err
 
     after (done) ->
       rimraf git_dir, (err) ->
@@ -610,12 +611,13 @@ describe "Repo", ->
         fs.copy "#{__dirname}/fixtures/reset", "#{git_dir}", (err) ->
           return done err if err
           fs.rename "#{git_dir}/git.git", "#{git_dir}/.git", (err) ->
-            return done err if err
-            repo = git git_dir
-            fs.writeFile "#{git_dir}/#{file}", "hello", (err) ->
-              return done err if err?
-              repo.add "#{git_dir}/#{file}", (err) ->
-                done err
+            git.init git_dir, (err) ->
+              return done err if err
+              repo = git git_dir
+              fs.writeFile "#{git_dir}/#{file}", "hello", (err) ->
+                return done err if err?
+                repo.add "#{git_dir}/#{file}", (err) ->
+                  done err
 
     after (done) ->
       rimraf git_dir, (err) ->

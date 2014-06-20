@@ -2,7 +2,6 @@ should   = require 'should'
 sinon    = require 'sinon'
 
 fs       = require 'fs-extra'
-rimraf   = require 'rimraf'
 fixtures = require './fixtures'
 git      = require '../src'
 Actor    = require '../src/actor'
@@ -25,7 +24,7 @@ describe "Repo", ->
 
     # given a fresh new repo
     before (done) ->
-      rimraf git_dir, (err) ->
+      fs.remove git_dir, (err) ->
         return done err if err
         fs.mkdir git_dir, '0755', (err) ->
           return done err if err
@@ -35,7 +34,7 @@ describe "Repo", ->
             done()
 
     after (done) ->
-      rimraf git_dir, done
+      fs.remove git_dir, done
 
     describe "with only a file", ->
       file = 'foo.txt'
@@ -142,7 +141,7 @@ describe "Repo", ->
 
       # given a fresh new repo
       before (done) ->
-        rimraf git_dir, (err) ->
+        fs.remove git_dir, (err) ->
           return done err if err?
           fs.mkdir git_dir, '0755', (err) ->
             return done err if err?
@@ -163,7 +162,7 @@ describe "Repo", ->
                       done err
 
       after (done) ->
-        rimraf git_dir, done
+        fs.remove git_dir, done
 
       it "has right message", (done) ->
         commit.message.should.eql 'message with spaces'
@@ -398,7 +397,7 @@ describe "Repo", ->
     git_dir = __dirname + "/fixtures/junk_create_tag"
 
     before (done) ->
-      rimraf git_dir, (err) ->
+      fs.remove git_dir, (err) ->
         return done err if err
         fs.mkdir git_dir, 0o755, (err) ->
           return done err if err
@@ -412,7 +411,7 @@ describe "Repo", ->
                 repo.commit "initial commit", {all: true}, done
 
     after (done) ->
-      rimraf git_dir, done
+      fs.remove git_dir, done
 
     it "creates a tag", (done) ->
       repo.create_tag "foo", done
@@ -495,7 +494,7 @@ describe "Repo", ->
     # given a fresh new repo
     beforeEach (done) ->
       status = null
-      rimraf git_dir, (err) ->
+      fs.remove git_dir, (err) ->
         return done err if err
         fs.copy "#{__dirname}/fixtures/reset", "#{git_dir}", (err) ->
           return done err if err
@@ -509,7 +508,7 @@ describe "Repo", ->
                   done err
 
     after (done) ->
-      rimraf git_dir, (err) ->
+      fs.remove git_dir, (err) ->
         done err
 
     describe "reset without specific treeish (defaults to HEAD)", ->
@@ -606,7 +605,7 @@ describe "Repo", ->
     # given a fresh new repo
     beforeEach (done) ->
       status = null
-      rimraf git_dir, (err) ->
+      fs.remove git_dir, (err) ->
         return done err if err
         fs.copy "#{__dirname}/fixtures/reset", "#{git_dir}", (err) ->
           return done err if err
@@ -620,7 +619,7 @@ describe "Repo", ->
                   done err
 
     after (done) ->
-      rimraf git_dir, (err) ->
+      fs.remove git_dir, (err) ->
         done err
 
     describe "passing no explicit files", ->

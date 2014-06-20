@@ -4,15 +4,15 @@ Commit = require './commit'
 exports.Ref = class Ref
   constructor: (@name, @commit) ->
     {@repo} = @commit
-  
+
   # Public: Get a String representation of the Ref.
   toString: ->
     "#<Ref '#{@name}'>"
-  
+
   # Internal: Find all refs.
-  # 
+  #
   # options - (optional).
-  # 
+  #
   # Returns Array of Ref.
   @find_all: (repo, type, RefClass, callback) ->
     repo.git.refs type, {}, (err, text) ->
@@ -24,7 +24,7 @@ exports.Ref = class Ref
         [name, id] = ref.split(' ')
         names.push name
         ids.push id
-      
+
       Commit.find_commits repo, ids, (err, commits) ->
         return callback err if err
         refs = []
@@ -36,7 +36,7 @@ exports.Ref = class Ref
 exports.Head = class Head extends Ref
   @find_all: (repo, callback) ->
     Ref.find_all repo, "head", Head, callback
-  
+
   @current: (repo, callback) ->
     fs.readFile "#{repo.dot_git}/HEAD", (err, data) ->
       return callback err if err

@@ -254,7 +254,18 @@ the file is staged, tracked, etc.
 
 Each file has the following properties:
 
-  * `type`    - "A" for added, "M" for modified, "D" for deleted.
+  * `type` which translates to:
+
+| _type_   | index     | working tree |
+| :---     | :-------: | :-----------:|
+| `A `     | added     | -            |
+| `M `     | modified  | -            |
+| `D `     | deleted   | -            |
+| `AM`     | added     | modified     |
+| `MM`     | modified  | modified     |
+| `AD`     | staged    | deleted      |
+| `MD`     | modified  | deleted      |
+
   * `staged`  - `Boolean`
   * `tracked` - `Boolean`
 

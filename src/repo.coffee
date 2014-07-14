@@ -73,7 +73,7 @@ module.exports = class Repo
   #
   #   # Skip some (for pagination):
   #   repo.commits "master", 30, 30, (err, commits) ->
-  #   
+  #
   #   # Do not limit commits amount
   #   repo.commits "master", -1, (err, commits) ->
   #
@@ -93,10 +93,10 @@ module.exports = class Repo
     Commit.find_all this, start, options, callback
 
 
-  # Internal: Returns current commit id 
-  # 
+  # Internal: Returns current commit id
+  #
   # callback - Receives `(err, id)`.
-  # 
+  #
   current_commit_id: (callback) ->
     @git "rev-parse HEAD", {}, []
     , (err, stdout, stderr) =>
@@ -104,10 +104,10 @@ module.exports = class Repo
       return callback null, _.first stdout.split "\n"
 
 
-  # Public: 
-  # 
+  # Public:
+  #
   # callback - Receives `(err, commit)`
-  # 
+  #
   current_commit: (callback) ->
     @current_commit_id (err, commit_id) =>
       return callback err if err
@@ -241,7 +241,7 @@ module.exports = class Repo
   status: (callback) ->
     return Status(this, callback)
 
-  # Public: Show information about files in the index and the 
+  # Public: Show information about files in the index and the
   #         working tree.
   #
   # options  - An Object of command line arguments to pass to
@@ -333,6 +333,42 @@ module.exports = class Repo
   checkout: (treeish, callback) ->
     @git "checkout", {}, treeish, callback
 
+  # Public: Reset the git repo.
+  #
+  # treeish  - The {String} to reset to.
+  # options  - The {Object} containing one of the following items:
+  #   :soft  - {Boolean)
+  #   :mixed - {Boolean) When no other option given git defaults to 'mixed'.
+  #   :hard  - {Boolean)
+  #   :merge - {Boolean)
+  #   :keep  - {Boolean)
+  # callback - The {Function} to callback.
+  #
+  reset: (treeish, options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    [treeish, callback] = [callback, treeish] if !callback
+    [treeish, options]  = [options, treeish]  if typeof treeish is 'object'
+    treeish ?= 'HEAD'
+    options ?= {}
+
+    @git "reset", options, treeish, callback
+
+  # Public: Checkout file(s) to the index
+  #
+  # files    - Array of String paths; or a String path. If you want to
+  #            checkout all files pass '.'.'
+  # options  - Object (optional).
+  #            "force" - Boolean
+  # callback - Receives `(err)`.
+  #
+  checkoutFile: (files, options, callback) ->
+    [options, callback] = [callback, options] if !callback
+    [files, callback]   = [callback, files]   if !callback
+    [files, options]    = [options, files]    if typeof files is 'object'
+    options ?= {}
+    files ?= '.'
+    files = [files] if _.isString files
+    @git "checkout", options, _.flatten(['--', files]), callback
 
   # Public: Commit some code.
   #
@@ -357,13 +393,13 @@ module.exports = class Repo
   # options  - Object (optional).
   #            "all"   - Boolean
   # callback - Receives `(err)`.
-  # 
+  #
   add: (files, options, callback) ->
     [options, callback] = [callback, options] if !callback
     options ?= {}
     files = [files] if _.isString files
     @git "add", options, files, callback
-  
+
   # Public: Remove files from the index.
   #
   # files    - Array of String paths; or a String path.
@@ -411,7 +447,7 @@ module.exports = class Repo
                 return callback null
             else
               return callback null
-              
+
   # Public: Pull the remotes from the master.
   #
   # Arguments: ([[remote_name, ]branch_name, ]callback)
@@ -432,9 +468,9 @@ module.exports = class Repo
       @git "pull", {}, [remote, branch], (err, stdout, stderr) =>
         return callback stderr if err
         return callback null
-    
+
   # Internal: Parse the list of files from `git ls-files`
-  # 
+  #
   # Return Files[]
   parse_lsFiles: (text,options) ->
     files = []

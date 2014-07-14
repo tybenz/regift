@@ -27,7 +27,7 @@ describe "Blob", ->
 
       it "is a string", ->
         data.should.be.type "string"
-        data.should.include "Bla"
+        data.should.containEql "Bla"
 
     describe "of a file in a subdir", ->
       repo = git "#{__dirname}/fixtures/branched"
@@ -41,7 +41,7 @@ describe "Blob", ->
 
       it "is a string", ->
         data.should.be.type "string"
-        data.should.include "!!!"
+        data.should.containEql "!!!"
 
   describe "#dataStream", ->
     describe "of a file off the root", ->
@@ -57,7 +57,7 @@ describe "Blob", ->
 
       it "is a string", ->
         data.should.be.type "string"
-        data.should.include "Bla"
+        data.should.containEql "Bla"
 
     describe "of a file in a subdir", ->
       repo = git "#{__dirname}/fixtures/branched"
@@ -73,6 +73,6 @@ describe "Blob", ->
 
       it "is a string", ->
         data.should.be.type "string"
-        data.should.include "!!!"
+        data.should.containEql "!!!"
 
 

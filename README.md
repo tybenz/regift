@@ -185,6 +185,14 @@ Commit some changes.
 ### `Repo#checkout(treeish, callback)`
 `git checkout <treeish>`
 
+### `Repo#checkoutFile([files, options, ]callback)`
+Checkout some files.
+
+  * `files`   - File(s) to checkout. Pass `'.'` or nothing to checkout all files.
+  * `options`   -
+    - `force`   - `Boolean`
+  * `callback`  - Receives `(err)`.
+
 ### `Repo#sync([[remote, ]branch, ]callback)`
 Sync the current branch with the remote, keeping all local changes intact.
 
@@ -194,6 +202,17 @@ The following steps are carried out: `stash`, `pull`, `push`, `stash pop`. If th
   * `branch`   - `String` (defaults to `master`).
   * `callback` - Receives `(err)`.
 
+### `Repo#reset([treeish, options, ]callback)`
+Checkout files.
+
+  * `treeish`   - The git object to reset to. Defaults to HEAD.
+  * `options`   -
+    - `soft`    - `Boolean`
+    - `mixed`   - `Boolean` __default__
+    - `hard`    - `Boolean`
+    - `merge`   - `Boolean`
+    - `keep`    - `Boolean`
+  * `callback`  - Receives `(err)`.
 
 ## Commit
 ### `Commit#id`

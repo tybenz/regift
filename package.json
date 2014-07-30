@@ -1,24 +1,23 @@
 {
-  "name": "gift",
+  "name": "regift",
   "version": "0.4.2",
-  "description": "a Git wrapper library",
+  "description": "DO NOT USE - a Git wrapper library - forked from gift",
   "keywords": [
     "git",
     "cli",
     "wrapper"
   ],
-  "homepage": "https://github.com/notatestuser/gift",
+  "homepage": "https://github.com/tybenz/regift",
   "bugs": {
-    "url": "https://github.com/notatestuser/gift/issues"
+    "url": "https://github.com/tybenz/regift/issues"
   },
   "author": {
-    "name": "sentientwaffle",
-    "url": "http://sentientwaffle.github.com/"
+    "name": "Tyler Benziger",
+    "url": "http://tybenz.com"
   },
   "main": "./lib/index",
   "scripts": {
-    "test": "mocha --compilers coffee:'./node_modules/coffee-script/lib/coffee-script/register'",
-    "prepublish": "coffee -o lib -c src"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -31,7 +30,6 @@
     "should": "~4.0.4",
     "mocha": "~1.20.1",
     "sinon": "~1.7.3",
-    "coffee-script": "~1.7.1",
     "fs-extra": "~0.9.1"
   },
   "engines": {

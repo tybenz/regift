@@ -1,6 +1,6 @@
 {
   "name": "regift",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "a Git wrapper library - forked from gift",
   "keywords": [
     "git",

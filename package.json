@@ -1,6 +1,6 @@
 {
   "name": "regift",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "DO NOT USE - a Git wrapper library - forked from gift",
   "keywords": [
     "git",
@@ -15,7 +15,7 @@
     "name": "Tyler Benziger",
     "url": "http://tybenz.com"
   },
-  "main": "./src/index",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha"
   },
